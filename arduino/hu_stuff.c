@@ -567,13 +567,17 @@ static void StartChatInput(int dest)
     HUlib_resetIText(&w_chat);
     HU_queueChatChar(HU_BROADCAST);
 
+#ifndef ARDUINO
     I_StartTextInput(0, 8, SCREENWIDTH, 16);
+#endif
 }
 
 static void StopChatInput(void)
 {
     chat_on = false;
+#ifndef ARDUINO
     I_StopTextInput();
+#endif
 }
 
 boolean HU_Responder(event_t *ev)
