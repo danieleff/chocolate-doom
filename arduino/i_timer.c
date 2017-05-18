@@ -16,23 +16,33 @@
 //      Timer functions.
 //
 
+#ifndef ARDUINO
+
 #include "SDL.h"
+
+#else
+
+#define __bool_true_false_are_defined
+#include "Arduino.h"
+
+#endif
 
 #include "i_timer.h"
 #include "doomtype.h"
+
 
 //
 // I_GetTime
 // returns time in 1/35th second tics
 //
 
-static Uint32 basetime = 0;
+static uint32_t basetime = 0;
 
 int  I_GetTime (void)
 {
-    Uint32 ticks;
+    uint32_t ticks;
 
-    ticks = SDL_GetTicks();
+    ticks = millis();
 
     if (basetime == 0)
         basetime = ticks;
@@ -48,9 +58,9 @@ int  I_GetTime (void)
 
 int I_GetTimeMS(void)
 {
-    Uint32 ticks;
+    uint32_t ticks;
 
-    ticks = SDL_GetTicks();
+    ticks = millis();
 
     if (basetime == 0)
         basetime = ticks;
@@ -62,7 +72,8 @@ int I_GetTimeMS(void)
 
 void I_Sleep(int ms)
 {
-    SDL_Delay(ms);
+    HAL_Delay(ms);
+    //delay(ms);
 }
 
 void I_WaitVBL(int count)
@@ -75,6 +86,8 @@ void I_InitTimer(void)
 {
     // initialize timer
 
+#ifndef ARDUINO
     SDL_Init(SDL_INIT_TIMER);
+#endif
 }
 
