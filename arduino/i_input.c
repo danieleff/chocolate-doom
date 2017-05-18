@@ -16,10 +16,12 @@
 //     SDL implementation of system-specific input interface.
 //
 
+#ifndef ARDUINO
 
 #include "SDL.h"
 #include "SDL_keycode.h"
 
+#endif
 #include "doomkeys.h"
 #include "doomtype.h"
 #include "d_event.h"
@@ -99,6 +101,8 @@ int vanilla_keyboard_mapping = true;
 // by mouse_acceleration to increase the speed.
 float mouse_acceleration = 2.0;
 int mouse_threshold = 10;
+
+#ifndef ARDUINO
 
 // Translates the SDL key to a value of the type found in doomkeys.h
 static int TranslateKey(SDL_Keysym *sym)
@@ -458,6 +462,7 @@ void I_ReadMouse(void)
     }
 }
 
+#endif
 // Bind all variables controlling input options.
 void I_BindInputVariables(void)
 {
