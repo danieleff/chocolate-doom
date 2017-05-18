@@ -25,7 +25,10 @@
 #include <errno.h>
 #include <assert.h>
 
+#ifndef ARDUINO
 #include "SDL_filesystem.h"
+#endif
+
 
 #include "config.h"
 
@@ -2148,8 +2151,13 @@ float M_GetFloatVariable(char *name)
 // Get the path to the default configuration dir to use, if NULL
 // is passed to M_SetConfigDir.
 
+static char* arduinoDir= "/";
+
 static char *GetDefaultConfigDir(void)
 {
+
+#ifndef ARDUINO
+
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
     // Configuration settings are stored in an OS-appropriate path
@@ -2163,6 +2171,9 @@ static char *GetDefaultConfigDir(void)
     return result;
 #endif /* #ifndef _WIN32 */
     return M_StringDuplicate("");
+#else
+    return arduinoDir;
+#endif
 }
 
 // 
