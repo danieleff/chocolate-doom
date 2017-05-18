@@ -17,8 +17,10 @@
 //
 
 
+#ifndef ARDUINO
 #include "SDL.h"
 #include "SDL_opengl.h"
+#endif
 
 #ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
@@ -50,8 +52,10 @@
 // These are (1) the window (or the full screen) that our game is rendered to
 // and (2) the renderer that scales the texture (see below) into this window.
 
+#ifndef ARDUINO
 static SDL_Window *screen;
 static SDL_Renderer *renderer;
+#endif
 
 // Window title
 
@@ -64,6 +68,7 @@ static char *window_title = "";
 // is upscaled by an integer factor UPSCALE using "nearest" scaling and which
 // in turn is finally rendered to screen using "linear" scaling.
 
+#ifndef ARDUINO
 static SDL_Surface *screenbuffer = NULL;
 static SDL_Surface *rgbabuffer = NULL;
 static SDL_Texture *texture = NULL;
@@ -75,12 +80,14 @@ static SDL_Rect blit_rect = {
     SCREENWIDTH,
     SCREENHEIGHT
 };
+#endif
 
 static uint32_t pixel_format;
 
 // palette
 
-static SDL_Color palette[256];
+SDL_Color palette[256];
+
 static boolean palette_to_set;
 
 // display has been set up?
@@ -251,6 +258,7 @@ void I_DisplayFPSDots(boolean dots_on)
 
 static void SetShowCursor(boolean show)
 {
+#ifndef ARDUINO
     if (!screensaver_mode)
     {
         // When the cursor is hidden, grab the input.
@@ -258,15 +266,18 @@ static void SetShowCursor(boolean show)
         SDL_SetRelativeMouseMode(!show);
         SDL_GetRelativeMouseState(NULL, NULL);
     }
+#endif
 }
 
 void I_ShutdownGraphics(void)
 {
+
     if (initialized)
     {
         SetShowCursor(true);
-
+#ifndef ARDUINO
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
+#endif
 
         initialized = false;
     }
@@ -317,6 +328,7 @@ static void AdjustWindowSize(void)
     }
 }
 
+#ifndef ARDUINO
 static void HandleWindowEvent(SDL_WindowEvent *event)
 {
     int i, flags;
@@ -391,7 +403,9 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
             break;
     }
 }
+#endif
 
+#ifndef ARDUINO
 static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 {
     Uint16 flags = (KMOD_LALT | KMOD_RALT);
@@ -400,7 +414,10 @@ static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 #endif
     return sym->scancode == SDL_SCANCODE_RETURN && (sym->mod & flags) != 0;
 }
+#endif
 
+
+#ifndef ARDUINO
 static void I_ToggleFullScreen(void)
 {
     unsigned int flags = 0;
@@ -428,9 +445,11 @@ static void I_ToggleFullScreen(void)
         SDL_SetWindowSize(screen, window_width, window_height);
     }
 }
+#endif
 
 void I_GetEvent(void)
 {
+#ifndef ARDUINO
     extern void I_HandleKeyboardEvent(SDL_Event *sdlevent);
     extern void I_HandleMouseEvent(SDL_Event *sdlevent);
     SDL_Event sdlevent;
@@ -486,6 +505,8 @@ void I_GetEvent(void)
                 break;
         }
     }
+#endif
+
 }
 
 //
@@ -500,6 +521,7 @@ void I_StartTic (void)
 
     I_GetEvent();
 
+#ifndef ARDUINO
     if (usemouse && !nomouse)
     {
         I_ReadMouse();
@@ -509,6 +531,7 @@ void I_StartTic (void)
     {
         I_UpdateJoystick();
     }
+#endif
 }
 
 
@@ -548,10 +571,12 @@ static void UpdateGrab(void)
         // place for it to appear - we may only have released the grab
         // because we're at an end of level intermission screen, for
         // example.
-
+#ifndef ARDUINO
         SDL_GetWindowSize(screen, &screen_w, &screen_h);
         SDL_WarpMouseInWindow(screen, screen_w - 16, screen_h - 16);
         SDL_GetRelativeMouseState(NULL, NULL);
+#endif
+
     }
 
     currently_grabbed = grab;
@@ -559,6 +584,7 @@ static void UpdateGrab(void)
 
 static void LimitTextureSize(int *w_upscale, int *h_upscale)
 {
+#ifndef ARDUINO
     SDL_RendererInfo rinfo;
     int orig_w, orig_h;
 
@@ -622,10 +648,12 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale)
                max_scaling_buffer_pixels,
                rinfo.max_texture_width, rinfo.max_texture_height);
     }
+#endif
 }
 
 static void CreateUpscaledTexture(boolean force)
 {
+#ifndef ARDUINO
     const int actualheight = EffectiveScreenHeight();
     int w, h;
     int h_upscale, w_upscale;
@@ -702,7 +730,10 @@ static void CreateUpscaledTexture(boolean force)
                                 SDL_TEXTUREACCESS_TARGET,
                                 w_upscale*SCREENWIDTH,
                                 h_upscale*SCREENHEIGHT);
+#endif
 }
+
+extern void arduinoDisplay();
 
 //
 // I_FinishUpdate
@@ -755,6 +786,7 @@ void I_FinishUpdate (void)
     // Draw disk icon before blit, if necessary.
     V_DrawDiskIcon();
 
+#ifndef ARDUINO
     if (palette_to_set)
     {
         SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
@@ -799,6 +831,10 @@ void I_FinishUpdate (void)
 
     // Restore background and undo the disk indicator, if it was drawn.
     V_RestoreDiskBackground();
+#endif
+
+    arduinoDisplay();
+
 }
 
 
@@ -877,17 +913,20 @@ void I_SetWindowTitle(char *title)
 
 void I_InitWindowTitle(void)
 {
+#ifndef ARDUINO
     char *buf;
 
     buf = M_StringJoin(window_title, " - ", PACKAGE_STRING, NULL);
     SDL_SetWindowTitle(screen, buf);
     free(buf);
+#endif
 }
 
 // Set the application icon
 
 void I_InitWindowIcon(void)
 {
+#ifndef ARDUINO
     SDL_Surface *surface;
 
     surface = SDL_CreateRGBSurfaceFrom((void *) icon_data, icon_w, icon_h,
@@ -897,6 +936,7 @@ void I_InitWindowIcon(void)
 
     SDL_SetWindowIcon(screen, surface);
     SDL_FreeSurface(surface);
+#endif
 }
 
 // Set video size to a particular scale factor (1x, 2x, 3x, etc.)
@@ -1088,6 +1128,7 @@ static void SetSDLVideoDriver(void)
 // display.
 static void CenterWindow(int *x, int *y, int w, int h)
 {
+#ifndef ARDUINO
     SDL_Rect bounds;
 
     if (SDL_GetDisplayBounds(video_display, &bounds) < 0)
@@ -1099,10 +1140,12 @@ static void CenterWindow(int *x, int *y, int w, int h)
 
     *x = bounds.x + SDL_max((bounds.w - w) / 2, 0);
     *y = bounds.y + SDL_max((bounds.h - h) / 2, 0);
+#endif
 }
 
 void I_GetWindowPosition(int *x, int *y, int w, int h)
 {
+#ifndef ARDUINO
     // Check that video_display corresponds to a display that really exists,
     // and if it doesn't, reset it.
     if (video_display < 0 || video_display >= SDL_GetNumVideoDisplays())
@@ -1143,10 +1186,12 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
         fprintf(stderr, "I_GetWindowPosition: invalid window_position setting\n");
         *x = *y = SDL_WINDOWPOS_UNDEFINED;
     }
+#endif
 }
 
 static void SetVideoMode(void)
 {
+#ifndef ARDUINO
     int w, h;
     int x, y;
     unsigned int rmask, gmask, bmask, amask;
@@ -1307,6 +1352,7 @@ static void SetVideoMode(void)
     // Initially create the upscaled texture for rendering to screen
 
     CreateUpscaledTexture(true);
+#endif
 }
 
 static const char *hw_emu_warning = 
@@ -1318,6 +1364,7 @@ static const char *hw_emu_warning =
 
 static void CheckGLVersion(void)
 {
+#ifndef ARDUINO
     const char * version;
     typedef const GLubyte* (APIENTRY * glStringFn_t)(GLenum);
     glStringFn_t glfp = (glStringFn_t)SDL_GL_GetProcAddress("glGetString");
@@ -1331,10 +1378,24 @@ static void CheckGLVersion(void)
             printf("%s", hw_emu_warning);
         }
     }
+#endif
 }
 
 void I_InitGraphics(void)
 {
+
+    I_VideoBuffer = malloc(320*240);
+
+    initialized = true;
+
+    window_focused = true;
+
+    byte *doompal = W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE);
+    I_SetPalette(doompal);
+
+    UpdateGrab();
+
+#ifndef ARDUINO
     SDL_Event dummy;
     byte *doompal;
     char *env;
@@ -1424,6 +1485,7 @@ void I_InitGraphics(void)
     // Call I_ShutdownGraphics on quit
 
     I_AtExit(I_ShutdownGraphics, true);
+#endif
 }
 
 // Bind all variables controlling video options into the configuration
