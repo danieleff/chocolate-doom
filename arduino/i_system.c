@@ -30,7 +30,9 @@
 #include <unistd.h>
 #endif
 
+#ifndef ARDUINO
 #include "SDL.h"
+#endif
 
 #include "config.h"
 
@@ -247,9 +249,14 @@ void I_Quit (void)
         entry = entry->next;
     }
 
+#ifndef ARDUINO
     SDL_Quit();
 
     exit(0);
+#else
+    while(1);
+#endif
+
 }
 
 
@@ -307,6 +314,7 @@ void I_Error (char *error, ...)
 
     exit_gui_popup = !M_ParmExists("-nogui");
 
+#ifndef ARDUINO
     // Pop up a GUI dialog box to show the error message, if the
     // game was not run from the console (and the user will
     // therefore be unable to otherwise see the message).
@@ -321,6 +329,10 @@ void I_Error (char *error, ...)
     SDL_Quit();
 
     exit(-1);
+#else
+    while(1);
+#endif
+
 }
 
 //
