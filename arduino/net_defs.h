@@ -28,7 +28,12 @@
 // NET_MAXPLAYERS, as there may be observers that are not participating
 // (eg. left/right monitors)
 
+// Arduino: do not use memory for network
+#ifdef ARDUINO
+#define MAXNETNODES 0
+#else
 #define MAXNETNODES 16
+#endif
 
 // The maximum number of players, multiplayer/networking.
 // This is the maximum supported by the networking code; individual games
@@ -42,7 +47,12 @@
 
 // Networking and tick handling related.
 
+// Arduino: do not use memory for network
+#ifdef ARDUINO
+#define BACKUPTICS 0
+#else
 #define BACKUPTICS 128
+#endif
 
 typedef struct _net_module_s net_module_t;
 typedef struct _net_packet_s net_packet_t;
