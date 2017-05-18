@@ -1239,7 +1239,9 @@ void D_DoomMain (void)
     if (M_CheckParm("-dedicated") > 0)
     {
         printf("Dedicated server mode.\n");
+#ifndef ARDUINO
         NET_DedicatedServer();
+#endif
 
         // Never returns
     }
@@ -1662,7 +1664,9 @@ void D_DoomMain (void)
     DEH_printf("I_Init: Setting up machine state.\n");
     I_CheckIsScreensaver();
     I_InitTimer();
+#ifndef ARDUINO
     I_InitJoystick();
+#endif
     I_InitSound(true);
     I_InitMusic();
 
