@@ -22,7 +22,9 @@
 #include "doomtype.h"
 #include "i_video.h"
 
+#ifndef ARDUINO
 #include "txt_main.h"
+#endif
 
 #define ENDOOM_W 80
 #define ENDOOM_H 25
@@ -33,6 +35,7 @@
 
 void I_Endoom(byte *endoom_data)
 {
+#ifndef ARDUINO
     unsigned char *screendata;
     int y;
     int indent;
@@ -75,5 +78,6 @@ void I_Endoom(byte *endoom_data)
     // Shut down text mode screen
 
     TXT_Shutdown();
+#endif
 }
 
