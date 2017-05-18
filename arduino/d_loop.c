@@ -449,6 +449,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
     // Start a multiplayer server, listening for connections.
     //
 
+#ifndef ARDUINO
     if (M_CheckParm("-server") > 0
      || M_CheckParm("-privateserver") > 0)
     {
@@ -524,6 +525,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
 
         result = true;
     }
+#endif
 
     return result;
 }
