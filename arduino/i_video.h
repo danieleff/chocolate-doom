@@ -33,6 +33,17 @@
 
 typedef boolean (*grabmouse_callback_t)(void);
 
+#ifdef ARDUINO
+
+typedef struct{
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+  uint8_t unused;
+} SDL_Color;
+
+#endif
+
 // Called by D_DoomMain,
 // determines the hardware configuration
 // and sets up the video mode
