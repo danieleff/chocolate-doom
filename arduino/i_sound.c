@@ -18,7 +18,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifndef ARDUINO
 #include "SDL_mixer.h"
+#endif
 
 #include "config.h"
 #include "doomtype.h"
@@ -216,6 +218,7 @@ void I_InitSound(boolean use_sfx_prefix)
 
     // Initialize the sound and music subsystems.
 
+#ifndef ARDUINO
     if (!nosound && !screensaver_mode)
     {
         // This is kind of a hack. If native MIDI is enabled, set up
@@ -239,6 +242,7 @@ void I_InitSound(boolean use_sfx_prefix)
             InitMusicModule();
         }
     }
+#endif
 }
 
 void I_ShutdownSound(void)

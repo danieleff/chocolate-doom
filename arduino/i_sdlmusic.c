@@ -16,6 +16,7 @@
 //	System interface for music.
 //
 
+#ifndef ARDUINO
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1309,3 +1310,4 @@ music_module_t music_sdl_module =
     I_SDL_PollMusic,
 };
 
+#endif

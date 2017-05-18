@@ -17,6 +17,8 @@
 //	System interface for sound.
 //
 
+#ifndef ARDUINO
+
 #include "config.h"
 
 #include <stdio.h>
@@ -1150,3 +1152,4 @@ sound_module_t sound_sdl_module =
     I_SDL_PrecacheSounds,
 };
 
+#endif
