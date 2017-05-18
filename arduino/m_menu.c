@@ -655,7 +655,9 @@ void M_SaveSelect(int choice)
     // We need to turn on text input:
     x = LoadDef.x - 11;
     y = LoadDef.y + choice * LINEHEIGHT - 4;
+#ifndef ARDUINO
     I_StartTextInput(x, y, x + 8 + 24 * 8 + 8, y + LINEHEIGHT - 2);
+#endif
 
     saveSlot = choice;
     M_StringCopy(saveOldString,savegamestrings[choice], SAVESTRINGSIZE);
@@ -1560,14 +1562,18 @@ boolean M_Responder (event_t* ev)
 
           case KEY_ESCAPE:
             saveStringEnter = 0;
+#ifndef ARDUINO
             I_StopTextInput();
+#endif
             M_StringCopy(savegamestrings[saveSlot], saveOldString,
                          SAVESTRINGSIZE);
             break;
 
 	  case KEY_ENTER:
 	    saveStringEnter = 0;
+#ifndef ARDUINO
             I_StopTextInput();
+#endif
 	    if (savegamestrings[saveSlot][0])
 		M_DoSave(saveSlot);
 	    break;
@@ -1910,7 +1916,10 @@ static void M_DrawOPLDev(void)
     char *curr, *p;
     int line;
 
+#ifndef ARDUINO
     I_OPL_DevMessages(debug, sizeof(debug));
+#endif
+
     curr = debug;
     line = 0;
 
