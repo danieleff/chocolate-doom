@@ -16,6 +16,8 @@
 //     for Hexen startup loading screen.
 //
 
+#ifndef ARDUINO
+
 #include "SDL.h"
 #include "string.h"
 
@@ -255,3 +257,4 @@ boolean I_CheckAbortHR(void)
     return result;
 }
 
+#endif
