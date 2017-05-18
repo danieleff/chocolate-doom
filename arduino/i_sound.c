@@ -441,6 +441,8 @@ void I_BindSoundVariables(void)
     extern int use_libsamplerate;
     extern float libsamplerate_scale;
 
+#ifndef ARDUINO
+
     M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
     M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
     M_BindIntVariable("snd_sbport",              &snd_sbport);
@@ -462,5 +464,8 @@ void I_BindSoundVariables(void)
 
     M_BindIntVariable("use_libsamplerate",       &use_libsamplerate);
     M_BindFloatVariable("libsamplerate_scale",   &libsamplerate_scale);
+
+#endif
+
 }
 
