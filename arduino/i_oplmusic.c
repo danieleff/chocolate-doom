@@ -16,6 +16,7 @@
 //   System interface for music.
 //
 
+#ifndef ARDUINO
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1890,3 +1891,4 @@ void I_OPL_DevMessages(char *result, size_t result_len)
     } while (lines < 25 && i != last_perc_count);
 }
 
+#endif
