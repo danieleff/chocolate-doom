@@ -20,7 +20,9 @@
 
 #include <stdio.h>
 
+#ifndef ARDUINO
 #include "SDL.h"
+#endif
 
 #include "doomtype.h"
 #include "i_system.h"
@@ -34,6 +36,7 @@
 
 void D_DoomMain (void);
 
+#ifndef ARDUINO
 int main(int argc, char **argv)
 {
     // save arguments
@@ -50,3 +53,4 @@ int main(int argc, char **argv)
     return 0;
 }
 
+#endif
