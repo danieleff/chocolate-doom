@@ -18,7 +18,9 @@
 
 #include <stdio.h>
 
+#ifndef ARDUINO
 #include "SDL.h"
+#endif
 
 #include "doomtype.h"
 
