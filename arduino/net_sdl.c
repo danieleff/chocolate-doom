@@ -15,6 +15,8 @@
 //     Networking module which uses SDL_net
 //
 
+#ifndef ARDUINO
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -379,3 +381,4 @@ net_module_t net_sdl_module =
     NET_SDL_ResolveAddress,
 };
 
+#endif
