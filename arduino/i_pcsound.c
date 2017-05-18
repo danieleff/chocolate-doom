@@ -15,6 +15,8 @@
 //	System interface for PC speaker sound.
 //
 
+#ifndef ARDUINO
+
 #include "SDL.h"
 #include <string.h>
 
@@ -329,3 +331,4 @@ sound_module_t sound_pcsound_module =
     I_PCS_SoundIsPlaying,
 };
 
+#endif
