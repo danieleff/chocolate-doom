@@ -15,9 +15,12 @@
 //       SDL Joystick code.
 //
 
+#ifndef ARDUINO
 
 #include "SDL.h"
 #include "SDL_joystick.h"
+
+#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,7 +39,9 @@
 
 #define DEAD_ZONE (32768 / 3)
 
+#ifndef ARDUINO
 static SDL_Joystick *joystick = NULL;
+#endif
 
 // Configuration variables:
 
@@ -70,6 +75,8 @@ static int joystick_strafe_invert = 0;
 static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 };
+
+#ifndef ARDUINO
 
 void I_ShutdownJoystick(void)
 {
@@ -362,6 +369,8 @@ void I_UpdateJoystick(void)
     }
 }
 
+#endif
+
 void I_BindJoystickVariables(void)
 {
     int i;
@@ -383,4 +392,3 @@ void I_BindJoystickVariables(void)
         M_BindIntVariable(name, &joystick_physical_buttons[i]);
     }
 }
-
