@@ -49,7 +49,7 @@
 
 // Arduino: do not use memory for network
 #ifdef ARDUINO
-#define BACKUPTICS 0
+#define BACKUPTICS 8
 #else
 #define BACKUPTICS 128
 #endif
