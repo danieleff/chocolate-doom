@@ -576,8 +576,13 @@ void R_InitTextures (void)
 	texture->width = SHORT(mtexture->width);
 	texture->height = SHORT(mtexture->height);
 	texture->patchcount = SHORT(mtexture->patchcount);
-	
+#ifdef ARDUINO
+    for (int i=0; i<sizeof(texture->name); i++) {
+        texture->name[i] = mtexture->name[i];
+    }
+#else
 	memcpy (texture->name, mtexture->name, sizeof(texture->name));
+#endif
 	mpatch = &mtexture->patches[0];
 	patch = &texture->patches[0];
 
