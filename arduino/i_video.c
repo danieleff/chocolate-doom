@@ -447,8 +447,12 @@ static void I_ToggleFullScreen(void)
 }
 #endif
 
+extern void arduinoDoPostEvents();
+
 void I_GetEvent(void)
 {
+    arduinoDoPostEvents();
+
 #ifndef ARDUINO
     extern void I_HandleKeyboardEvent(SDL_Event *sdlevent);
     extern void I_HandleMouseEvent(SDL_Event *sdlevent);
